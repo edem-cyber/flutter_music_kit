@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:music_kit_platform_interface/music_kit_platform_interface.dart';
@@ -32,6 +34,7 @@ class MethodChannelMusicKit extends MusicKitPlatform {
     try {
       final resp = await methodChannel
           .invokeMapMethod<String, dynamic>('requestAuthorizationStatus');
+      debugPrint("RESP requestAuthorizationStatus VALUE: $resp");
       return MusicAuthorizationStatus.fromRawValue(
         resp!['status'].toInt(),
         musicUserToken: resp['musicUserToken']?.toString(),
@@ -45,6 +48,8 @@ class MethodChannelMusicKit extends MusicKitPlatform {
   Future<MusicAuthorizationStatus> get authorizationStatus async {
     final resp = await methodChannel
         .invokeMapMethod<String, dynamic>('authorizationStatus');
+    log("MusicKit authorization status response: $resp");
+    debugPrint("MusicKit authorization status response: $resp");
     return MusicAuthorizationStatus.fromRawValue(
       resp!['status'].toInt(),
       musicUserToken: resp['musicUserToken']?.toString(),
@@ -62,6 +67,9 @@ class MethodChannelMusicKit extends MusicKitPlatform {
   Future<String> requestUserToken(String developerToken) async {
     final resp =
         await methodChannel.invokeMethod('requestUserToken', developerToken);
+    debugPrint("Received MusicKit user token response: $resp");
+    log("Received MusicKit user token response: $resp");
+
     return resp.toString();
   }
 

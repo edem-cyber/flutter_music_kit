@@ -1,3 +1,4 @@
+import 'package:music_kit_platform_interface/method_channel/method_channel_music_kit.dart';
 import 'package:music_kit_platform_interface/music_kit_platform_interface.dart';
 
 export 'package:music_kit_platform_interface/music_kit_platform_interface.dart'
@@ -25,24 +26,29 @@ class MusicKit {
     return MusicKitPlatform.instance;
   }
 
+  final MethodChannelMusicKit _methodChannelMusicKit = MethodChannelMusicKit();
+
   Future<void> initialize(String developerToken, {String? musicUserToken}) =>
-      _platform.initialize(developerToken, musicUserToken: musicUserToken);
+      _methodChannelMusicKit.initialize(developerToken,
+          musicUserToken: musicUserToken);
 
   Future<MusicAuthorizationStatus> requestAuthorizationStatus() =>
-      _platform.requestAuthorizationStatus();
+      _methodChannelMusicKit.requestAuthorizationStatus();
 
   Future<MusicAuthorizationStatus> get authorizationStatus =>
-      _platform.authorizationStatus;
+      _methodChannelMusicKit.authorizationStatus;
 
-  Future<String> requestDeveloperToken() => _platform.requestDeveloperToken();
+  Future<String> requestDeveloperToken() =>
+      _methodChannelMusicKit.requestDeveloperToken();
 
   Future<String> requestUserToken(String developerToken) =>
-      _platform.requestUserToken(developerToken);
+      _methodChannelMusicKit.requestUserToken(developerToken);
 
-  Future<String> get currentCountryCode => _platform.currentCountryCode;
+  Future<String> get currentCountryCode =>
+      _methodChannelMusicKit.currentCountryCode;
 
   Stream<MusicSubscription> get onSubscriptionUpdated =>
-      _platform.onSubscriptionUpdated;
+      _methodChannelMusicKit.onSubscriptionUpdated;
 
   // player
   Future<bool> get isPreparedToPlay => _platform.isPreparedToPlay;
