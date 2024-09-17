@@ -5,7 +5,7 @@ import Combine
 
 public class SwiftMusicKitPlugin: NSObject, FlutterPlugin {
   internal var musicPlayer: ApplicationMusicPlayer = ApplicationMusicPlayer.shared
-  
+
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "plugins.misi.app/music_kit", binaryMessenger: registrar.messenger())
     let instance = SwiftMusicKitPlugin()
@@ -38,7 +38,7 @@ public class SwiftMusicKitPlugin: NSObject, FlutterPlugin {
       developerToken(result)
       
     case .requestUserToken:
-      fetchUserToken(developerToken: call.arguments as! String, result: result)
+      fetchUserToken(developerToken: call.arguments as! String, result: result)  // Implement this function
       
     case .currentCountryCode:
       currentCountryCode(result)
@@ -109,16 +109,34 @@ public class SwiftMusicKitPlugin: NSObject, FlutterPlugin {
       toggleShuffleMode(result)
     }
   }
-}
 
-extension SwiftMusicKitPlugin {
-  class MusicKitPluginStreamHandler: NSObject {
-    var eventSink: FlutterEventSink? = nil
+  // Implement fetchUserToken to retrieve Apple Music User Token
+  public func fetchUserToken(developerToken: String, result: @escaping FlutterResult) {
+    // Configure MusicKit with the developer token
+    MusicKit.configure(developerToken: developerToken)
+
+    Task {
+      do {
+        // Request user authorization
+        let authorizationStatus = await MusicAuthorization.request()
+
+        // Ensure the user authorized the app for Apple Music
+        guard authorizationStatus == .authorized else {
+          result(FlutterError(code: "AUTH_DENIED", message: "Apple Music Authorization Denied", details: nil))
+          return
+        }
+
+        // Get the user token (musicUserToken)
+        let userToken = try await MusicUserTokenRequest()
+
+        // Return the user token to Flutter
+        result(userToken)
+
+      } catch {
+        // Handle any errors
+        result(FlutterError(code: "USER_TOKEN_ERROR", message: "Failed to retrieve user token", details: error.localizedDescription))
+      }
+    }
   }
 }
 
-extension FlutterError {
-  public convenience init(code: String, message: String?) {
-    self.init(code: code, message: message, details: nil)
-  }
-}
