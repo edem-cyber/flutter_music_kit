@@ -30,33 +30,28 @@ abstract class MusicKitPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<void> initialize(String developerToken,
-      {String? musicUserToken}) async {
-    throw UnimplementedError('initialize() has not been implemented.');
+  Future<void> initialize(String developerToken, {String? musicUserToken}) {
+    return _instance.initialize(developerToken, musicUserToken: musicUserToken);
   }
 
-  Future<MusicAuthorizationStatus> requestAuthorizationStatus() async {
-    throw UnimplementedError(
-        'requestAuthorizationStatus() has not been implemented.');
+  Future<MusicAuthorizationStatus> requestAuthorizationStatus() {
+    return _instance.requestAuthorizationStatus();
   }
 
-  Future<MusicAuthorizationStatus> get authorizationStatus async {
-    throw UnimplementedError(
-        'get authorizationStatus has not been implemented.');
+  Future<MusicAuthorizationStatus> get authorizationStatus {
+    return _instance.authorizationStatus;
   }
 
-  Future<String> requestDeveloperToken() async {
-    throw UnimplementedError(
-        'get requestDeveloperToken() has not been implemented.');
+  Future<String> requestDeveloperToken() {
+    return _instance.requestDeveloperToken();
   }
 
-  Future<String> requestUserToken(String developerToken) async {
-    throw UnimplementedError('requestUserToken() has not been implemented.');
+  Future<String> requestUserToken(String developerToken) {
+    return _instance.requestUserToken(developerToken);
   }
 
-  Future<String> get currentCountryCode async {
-    throw UnimplementedError(
-        'get currentCountryCode has not been implemented.');
+  Future<String> get currentCountryCode {
+    return _instance.currentCountryCode;
   }
 
   Stream<MusicSubscription> get onSubscriptionUpdated {
